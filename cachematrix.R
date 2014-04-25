@@ -22,8 +22,23 @@ makeCacheMatrix = function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## Function finds inverse of matrix, using cached 
+## version if available to improve performance
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve = function(x) {
+
+  # make sure we're only solving our cacheMatrix object from makeCacheMatrix()
+  if(!class(x)=="list" || !attr(x, "type")=="cachedMatrix")
+    stop("Please use makeCacheMatrix to create solveable object")
+  
+  inv = x$getInv()
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  
+  data = x$get()
+  inv = solve(data)
+  x$setInv(inv)
+  inv
 }
