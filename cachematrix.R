@@ -1,10 +1,24 @@
-## Put comments here that give an overall description of what your
-## functions do
+# Matrix inverse caching function
 
-## Write a short comment describing this function
+# Function is intended to cache inverse of a matrix rather than 
+# continually computing it to potentially improve performance.
 
-makeCacheMatrix <- function(x = matrix()) {
+## First a proxy function for inverse-caching of matrices
 
+makeCacheMatrix = function(x = matrix()) {
+  inv = NULL
+  set = function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  get = function() x
+  setInv = function(inv) inv <<- inv
+  getInv = function() inv
+  proxy = list(set = set, get = get,
+             setInv = setInv,
+             getInv = getInv)
+  attr(proxy, "type") = "cachedMatrix"
+  proxy
 }
 
 
